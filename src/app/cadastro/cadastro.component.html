@@ -1,0 +1,38 @@
+<div class="page">
+  <div class="panel">
+    <div class="left">
+      <img class="logo" src="/assets/imagens/LOGO-CONDUMAX-espanhol-branca-inicio.png" alt="Condumax" />
+      <h1>Criar conta</h1>
+
+      <form class="form" (ngSubmit)="submit()" [formGroup]="form">
+        <label>Nome completo</label>
+        <input type="text" formControlName="nome" placeholder="Digite seu nome" />
+
+        <label>E-mail</label>
+        <input type="email" formControlName="email" placeholder="Digite seu e-mail" />
+
+        <label>Senha</label>
+        <input type="password" formControlName="senha" placeholder="Digite sua senha" />
+
+        <label>Confirmar senha</label>
+        <input type="password" formControlName="confirmar" placeholder="Confirme sua senha" />
+
+        <button type="submit" [disabled]="loading">
+          {{ loading ? 'Cadastrando...' : 'Cadastrar' }}
+        </button>
+      </form>
+
+      <div class="links">
+        <a routerLink="/login">Já tenho conta</a>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="overlay"></div>
+      <div class="welcome">
+        <h2>Bem-vindo à Condumax!</h2>
+        <p>Crie sua conta e aproveite nossos serviços.</p>
+      </div>
+    </div>
+  </div>
+</div>

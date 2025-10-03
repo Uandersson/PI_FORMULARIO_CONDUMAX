@@ -1,0 +1,13 @@
+/* Reset básico */
+html, body { height: 100%; }
+body { margin: 0; }
+
+/* 📸 Fundo da tela toda (atrás de todos os componentes) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;                      /* top/right/bottom/left = 0 */
+  background: url("/assets/imagens/WhatsApp%20Image%202025-09-24%20at%2016.48.11.jpeg")
+              center/cover no-repeat;
+  z-index: -1;                   /* fica atrás de todo o conteúdo */
+}

@@ -1,0 +1,14 @@
+.screen{
+  min-height:100dvh; display:grid; place-items:center; text-align:center; color:#e7eefc;
+}
+h1 {
+  font-family: 'Lato', Arial, sans-serif;
+   font-size:28px; margin:0 0 10px; text-shadow:0 2px 12px rgba(0,0,0,.35); }
+.msg{ opacity:.9; margin-bottom:16px; }
+button{
+  padding:10px 18px; border:0; border-radius:12px; background:#28d7ff; color:#02121a; font-weight:700; cursor:pointer;
+}
+
+p {
+  font-family: 'Lato', Arial, sans-serif;
+}

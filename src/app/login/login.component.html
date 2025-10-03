@@ -1,0 +1,50 @@
+<div class="page">
+  <div class="panel">
+    <!-- ESQUERDA -->
+    <div class="left">
+      <img
+        class="logo"
+        src="/assets/imagens/LOGO-CONDUMAX-espanhol-branca-inicio.png"
+        alt="Condumax"
+      />
+
+      <h1>Entrar</h1>
+
+      <form class="form" (ngSubmit)="submit()" [formGroup]="form">
+        <label>E-mail ou Usuário</label>
+        <input type="email" formControlName="email" placeholder="Digite seu e-mail" />
+        <small *ngIf="form.controls.email.touched && form.controls.email.invalid">
+          Informe um e-mail válido.
+        </small>
+
+        <label>Senha</label>
+        <input type="password" formControlName="senha" placeholder="Digite sua senha" />
+        <small *ngIf="form.controls.senha.touched && form.controls.senha.invalid">
+          Informe a senha.
+        </small>
+
+        <button type="submit" [disabled]="loading">
+          {{ loading ? 'Entrando...' : 'Entrar' }}
+        </button>
+
+        <!-- 🔹 Move os links para DENTRO do form para garantir que apareçam -->
+        <div class="links">
+          <a routerLink="/esqueci-senha" (click)="$event.preventDefault(); goEsqueci()">Esqueci minha senha</a>
+          <span>•</span>
+          <a routerLink="/cadastro" (click)="$event.preventDefault(); goCadastro()">Cadastrar</a>
+        </div>
+      </form>
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+    </div>
+
+    <!-- DIREITA -->
+    <div class="right">
+      <div class="overlay"></div>
+      <div class="welcome">
+        <h2>Bem-vindo(a) à Condumax!</h2>
+        <p>Conectando inovação e eficiência.</p>
+      </div>
+    </div>
+  </div>
+</div>

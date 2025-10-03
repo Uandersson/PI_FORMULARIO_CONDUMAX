@@ -1,0 +1,62 @@
+/* ===== FUNDO ===== */
+.page {
+  min-height: 100dvh; display:grid; place-items:center; padding:24px;
+  background:#0b0f16 url('/assets/imagens/WhatsApp Image 2025-09-24 at 16.48.11.jpeg') no-repeat center/cover;
+}
+
+/* ===== PAINEL ===== */
+.panel {
+  width:min(1080px,96vw); height:min(620px,86vh);
+  display:grid; grid-template-columns:420px 1fr;
+  border-radius:18px; overflow:hidden;
+  background:rgba(0, 0, 0, 0.55);
+  border:1px solid rgba(40,60,90,.35);
+  box-shadow:0 20px 60px rgba(0, 0, 0, 0.45);
+  backdrop-filter:blur(2px);
+  font-family: 'Lato', Arial, sans-serif;
+}
+
+/* ===== ESQUERDA ===== */
+.left {
+  height:100%;
+  background:linear-gradient(180deg, rgba(0, 0, 0, 0.92), rgba(3, 2, 2, 0.9));
+  color:#e7eefc; padding:26px 22px;
+  display:grid; grid-template-rows:auto auto 1fr auto; row-gap:10px;
+  overflow:auto;
+}
+
+.logo{ width:140px; display:block; margin:0 auto 8px; filter:drop-shadow(0 2px 8px rgba(0,0,0,.45)); }
+h1{ text-align:center; font-size:22px; margin-bottom:12px; }
+
+.form{ display:grid; gap:10px; }
+label{ font-size:12px; color:#a8b3c7; }
+input{
+  background:#000000; border:1px solid #233048; border-radius:12px;
+  padding:10px 12px; color:#e7eefc; outline:none;
+}
+input:focus{ border-color:#28d7ff; box-shadow:0 0 0 3px rgba(40,215,255,.15); }
+
+button{
+  margin-top:6px; padding:12px; border:0; border-radius:12px;
+  font-weight:700; color:#02121a; background:#28d7ff; cursor:pointer;
+}
+button:disabled{ opacity:.6; }
+
+.links{
+  margin-top:12px; display:flex; justify-content:center; gap:10px;
+}
+.links a{ color:#9ad8ff; text-decoration:underline; cursor:pointer; }
+.links a:hover{ opacity:.9; }
+
+/* ===== DIREITA ===== */
+.right{ position:relative; height:100%;
+  background:url('/assets/imagens/WhatsApp Image 2025-09-24 at 16.48.11.jpeg') no-repeat center/cover;
+}
+.right .overlay{
+  position:absolute; inset:0;
+  background:linear-gradient(135deg, rgba(20,115,230,.55) 0%, rgba(0, 0, 0, 0.55) 70%),
+             radial-gradient(1200px 600px at 80% 20%, rgba(40,215,255,.25), transparent 60%);
+}
+.welcome{ position:absolute; inset:0; display:grid; place-items:center; text-align:center; color:#eaf4ff; padding:24px; }
+.welcome h2{ font-size:clamp(22px,2.3vw,30px); margin-bottom:6px; }
+

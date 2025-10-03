@@ -1,0 +1,136 @@
+.page {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: #0b0f16
+    url('/assets/imagens/WhatsApp Image 2025-09-24 at 16.48.11.jpeg')
+    no-repeat center/cover;
+}
+
+.panel {
+  width: min(1080px, 96vw);
+  height: min(620px, 86vh);
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  border-radius: 18px;
+  overflow: hidden;
+  background: rgba(8, 13, 20, 0.55);
+  border: 1px solid rgba(40, 60, 90, 0.35);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(2px);
+  font-family: 'Lato', Arial, sans-serif;
+}
+
+.left {
+  height: 100%;
+  background: linear-gradient(180deg, rgba(9, 14, 22, 0.92), rgba(8, 12, 20, 0.9));
+  color: #e7eefc;
+  padding: 26px 22px;
+  display: grid;
+  grid-template-rows: auto auto 1fr auto auto;
+  row-gap: 10px;
+}
+
+.logo {
+  width: 140px;
+  display: block;
+  margin: 0 auto 8px;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45));
+}
+
+h1 {
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.form {
+  display: grid;
+  gap: 10px;
+}
+
+label {
+  font-size: 12px;
+  color: #a8b3c7;
+}
+
+input {
+  background: #0a1220;
+  border: 1px solid #233048;
+  border-radius: 12px;
+  padding: 10px 12px;
+  color: #e7eefc;
+  outline: none;
+}
+input:focus {
+  border-color: #28d7ff;
+  box-shadow: 0 0 0 3px rgba(40, 215, 255, 0.15);
+}
+
+button {
+  margin-top: 6px;
+  padding: 12px;
+  border: 0;
+  border-radius: 12px;
+  font-weight: 700;
+  color: #02121a;
+  background: #28d7ff;
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.6;
+}
+
+.links {
+  margin-top: 10px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  color: #9fb3c9;
+}
+.links a {
+  color: #9ad8ff;
+  text-decoration: none;
+}
+.links a:hover {
+  text-decoration: underline;
+}
+
+.right {
+  position: relative;
+  height: 100%;
+  background: url('/assets/imagens/WhatsApp Image 2025-09-24 at 16.48.11.jpeg')
+    no-repeat center/cover;
+}
+
+.right .overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+      135deg,
+      rgba(20, 115, 230, 0.55) 0%,
+      rgba(5, 10, 20, 0.55) 70%
+    ),
+    radial-gradient(1200px 600px at 80% 20%, rgba(40, 215, 255, 0.25), transparent 60%);
+}
+
+.welcome {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  color: #eaf4ff;
+  padding: 24px;
+}
+.welcome h2 {
+  font-size: clamp(22px, 2.3vw, 30px);
+  margin-bottom: 6px;
+}
+/* Reaproveita o mesmo visual do login */
+@import url('../login/login.component.css');
+
+.desc { color:#a8b3c7; margin: -4px 0 6px; text-align:left; }
+.ok { margin-top: 10px; color: #7dffb2; text-align: center; }

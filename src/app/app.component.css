@@ -1,0 +1,5 @@
+:host {
+  display: block;
+  min-height: 100dvh;
+  background: #0b0f16 url('/assets/imagens/fundo-condumax.jpg') no-repeat center/cover;
+}
