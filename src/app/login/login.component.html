@@ -11,12 +11,12 @@
       <h1>Entrar</h1>
 
       <form class="form" (ngSubmit)="submit()" [formGroup]="form">
-        <label>E-mail ou Usuário</label>
-        <input type="email" formControlName="email" placeholder="Digite seu e-mail" />
-        <small *ngIf="form.controls.email.touched && form.controls.email.invalid">
-          Informe um e-mail válido.
+        <label>Usuário</label>
+        <input type="text" formControlName="user" placeholder="Digite seu usuário" />
+        <small *ngIf="form.controls.user.touched && form.controls.user.invalid">
+          Informe o usuário.
         </small>
-
+        
         <label>Senha</label>
         <input type="password" formControlName="senha" placeholder="Digite sua senha" />
         <small *ngIf="form.controls.senha.touched && form.controls.senha.invalid">
@@ -26,13 +26,14 @@
         <button type="submit" [disabled]="loading">
           {{ loading ? 'Entrando...' : 'Entrar' }}
         </button>
+        
+          <!-- %%%% PARTE DO CODIGO PARADA  %%%% -->
+        <!-- <div class="links"> -->
+          <!-- <a routerLink="/esqueci-senha" (click)="$event.preventDefault(); goEsqueci()">Esqueci minha senha</a> -->
+          <!-- <span>•</span> -->
+          <!-- <a routerLink="/cadastro" (click)="$event.preventDefault(); goCadastro()">Cadastrar</a> -->
+        <!-- </div> -->
 
-        <!-- 🔹 Move os links para DENTRO do form para garantir que apareçam -->
-        <div class="links">
-          <a routerLink="/esqueci-senha" (click)="$event.preventDefault(); goEsqueci()">Esqueci minha senha</a>
-          <span>•</span>
-          <a routerLink="/cadastro" (click)="$event.preventDefault(); goCadastro()">Cadastrar</a>
-        </div>
       </form>
 
       <p class="error" *ngIf="error">{{ error }}</p>

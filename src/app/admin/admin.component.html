@@ -1,0 +1,41 @@
+<div class="page">
+  <div class="panel">
+    <div class="left">
+      <img class="logo" src="/assets/imagens/LOGO-CONDUMAX-espanhol-branca-inicio.png" alt="Condumax" />
+      <h1>Painel Administrativo</h1>
+
+      <form class="form" [formGroup]="form" (ngSubmit)="createUser()">
+        <label>Usuário</label>
+        <input type="text" formControlName="user" placeholder="Novo usuário" />
+
+        <label>Senha</label>
+        <input type="password" formControlName="senha" placeholder="Senha" />
+
+        <label>Tipo</label>
+        <select formControlName="role">
+          <option value="user">Usuário comum</option>
+          <option value="admin">Administrador</option>
+        </select>
+
+        <button type="submit">Criar Conta</button>
+      </form>
+
+      <div *ngIf="usuarios.length" style="margin-top:20px;">
+        <h3 style="margin:10px 0;">Usuários Criados:</h3>
+        <ul style="font-size:14px; color:#9fb3c9; list-style:none; padding:0;">
+          <li *ngFor="let u of usuarios">• {{ u.user }} ({{ u.role }})</li>
+        </ul>
+      </div>
+
+      <button (click)="logout()" style="margin-top:16px;">Sair</button>
+    </div>
+
+    <div class="right">
+      <div class="overlay"></div>
+      <div class="welcome">
+        <h2>Gerencie Usuários</h2>
+        <p>Crie novas contas e defina permissões.</p>
+      </div>
+    </div>
+  </div>
+</div>

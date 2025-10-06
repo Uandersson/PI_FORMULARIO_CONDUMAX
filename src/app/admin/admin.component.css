@@ -1,0 +1,163 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  background: #0b0f16 url('/assets/imagens/bg-dashboard.jpeg') no-repeat center/cover;
+  font-family: 'Lato', Arial, sans-serif;
+  color: #e7eefc;
+}
+
+/* Painel geral */
+.panel {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+/* LADO ESQUERDO */
+.left {
+  flex: 1;
+  background: rgba(11, 15, 22, 0.95);
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 24px;
+  box-shadow: 4px 0 10px rgba(0, 0, 0, 0.4);
+}
+
+.left .logo {
+  width: 140px;
+  margin-bottom: 12px;
+}
+
+.left h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  color: #e7eefc;
+  margin-bottom: 16px;
+}
+
+/* Formulário */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form label {
+  font-size: 0.9rem;
+  color: #aeb8d4;
+}
+
+.form input,
+.form select {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid #233048;
+  background: #0a1220;
+  color: #e7eefc;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.form input:focus,
+.form select:focus {
+  border-color: #28d7ff;
+  box-shadow: 0 0 6px rgba(40, 215, 255, 0.4);
+}
+
+/* Botão Criar Conta */
+.form button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  background: #28d7ff;
+  color: #02121a;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.form button:hover {
+  background: #4de1ff;
+  box-shadow: 0 0 10px rgba(77, 225, 255, 0.5);
+}
+
+/* Lista de usuários */
+.left h3 {
+  margin: 10px 0;
+  font-size: 1.1rem;
+  color: #e7eefc;
+}
+
+.left ul {
+  list-style: none;
+  padding: 0;
+}
+
+.left li {
+  padding: 6px 0;
+  border-bottom: 1px solid #233048;
+  color: #9fb3c9;
+  font-size: 0.95rem;
+}
+
+/* Botão Sair */
+.left button:last-of-type {
+  margin-top: 20px;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: 12px;
+  background: #28d7ff;
+  color: #02121a;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.left button:last-of-type:hover {
+  background: #4de1ff;
+  transform: scale(1.05);
+}
+
+/* LADO DIREITO */
+.right {
+  flex: 1;
+  background: url('/assets/imagens/bg-dashboard.jpeg') no-repeat center/cover;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.right .overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.welcome {
+  position: relative;
+  text-align: center;
+  z-index: 1;
+}
+
+.welcome h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.welcome p {
+  font-size: 1rem;
+  opacity: 0.85;
+}

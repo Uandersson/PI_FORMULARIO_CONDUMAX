@@ -48,6 +48,66 @@ h1 { text-align: center; font-size: 22px; margin: 4px 0 10px; }
 .form { display: grid; gap: 10px; align-content: start; }
 
 label { font-size: 12px; color: #a8b3c7; }
+:root {
+  --bg-color: #0b0f16;
+  --accent-color: #28d7ff;
+  --text-color: #e7eefc;
+  --muted-color: #9fb3c9;
+  --error-color: #ff7d7d;
+  --font-main: 'Lato', Arial, sans-serif;
+}
+
+.page {
+  background: var(--bg-color) url('/assets/imagens/bg.jpeg') no-repeat center/cover;
+}
+
+input {
+  color: var(--text-color);
+  border-color: #233048;
+  transition: all 0.2s ease;
+}
+
+button {
+  background: var(--accent-color);
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  background: #233048;
+}
+
+a {
+  transition: all 0.2s ease;
+}
+
+.panel {
+  background: rgba(10, 20, 30, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+}
+
+h1 {
+  font-size: 1.6rem;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+label {
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+@media (max-width: 800px) {
+  .panel {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  .right {
+    display: none;
+  }
+}
 
 input {
   background: #0a1220;
