@@ -2,7 +2,6 @@
   <!-- Barra Superior -->
   <header class="home-header">
     <img src="/assets/imagens/LOGO-CONDUMAX-espanhol-branca-inicio.png" alt="Logo Condumax" class="logo" />
-    <h1>Caderno Digital Condumax</h1>
   </header>
 
   <!-- Barra de ações -->
@@ -11,24 +10,22 @@
       <input type="text" placeholder="Buscar por código, lote, mês ou ano" [(ngModel)]="searchTerm" />
       <button (click)="search()">🔍</button>
     </div>
-    <button class="add-btn" >➕ Cadastrar Novo Caderno</button>
+    <button class="btn-cadastrar" routerLink="/caderno/novo">+ Cadastrar Novo Caderno</button>
   </div>
 
   <!-- Lista de cadernos -->
   <table class="cadernos-table">
     <thead>
       <tr>
-        <th>Código</th>
+        <th>Máquinas</th>
         <th>Mês/Ano</th>
-        <th>RMPs</th>
         <th>Ações</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let caderno of filteredCadernos">
-        <td>{{ caderno.codigo }}</td>
+        <td>{{ caderno.maquinas }}</td>
         <td>{{ caderno.mesAno }}</td>
-        <td>{{ caderno.qtdRMPs }}</td>
         <td>
           <button (click)="verDetalhes(caderno)">👁 Ver</button>
           <button (click)="editar(caderno)">✏️ Editar</button>
@@ -36,7 +33,7 @@
       </tr>
     </tbody>
   </table>
-
+  
   <p *ngIf="filteredCadernos.length === 0" class="empty-message">Nenhum caderno encontrado.</p>
 
   <!-- Botão de sair -->
