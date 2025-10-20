@@ -1,0 +1,43 @@
+<div class="home-page">
+  <!-- Barra Superior -->
+  <header class="home-header">
+    <img src="/assets/imagens/LOGO-CONDUMAX-espanhol-branca-inicio.png" alt="Logo Condumax" class="logo" />
+  </header>
+
+  <!-- Barra de ações -->
+  <div class="home-actions">
+    <div class="search-box">
+      <input type="text" placeholder="Buscar por código, lote, mês ou ano" [(ngModel)]="searchTerm" />
+      <button (click)="search()">🔍</button>
+    </div>
+    <button class="btn-cadastrar" routerLink="/caderno/novo">+ Cadastrar Novo Caderno</button>
+  </div>
+
+  <!-- Lista de cadernos -->
+  <table class="cadernos-table">
+    <thead>
+      <tr>
+        <th>Máquinas</th>
+        <th>Mês/Ano</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let caderno of filteredCadernos">
+        <td>{{ caderno.maquinas }}</td>
+        <td>{{ caderno.mesAno }}</td>
+        <td>
+          <button (click)="verDetalhes(caderno)">👁 Ver</button>
+          <button (click)="editar(caderno)">✏️ Editar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <p *ngIf="filteredCadernos.length === 0" class="empty-message">Nenhum caderno encontrado.</p>
+
+  <!-- Botão de sair -->
+  <div class="logout-section">
+    <button (click)="sair()">Sair</button>
+  </div>
+</div>
