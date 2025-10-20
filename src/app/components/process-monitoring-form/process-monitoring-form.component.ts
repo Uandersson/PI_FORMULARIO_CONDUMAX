@@ -145,3 +145,13 @@ export class ProcessMonitoringFormComponent {
       });
   }
 }
+
+export class ProcessMonitoringFormComponentV2 {
+  folhas = Array.from({ length: 10 }, (_, i) => i + 1);
+
+  adicionarFolha() {
+    const novaFolha = this.folhas.length + 1;
+    this.folhas.push(novaFolha);
+  }
+}
+
