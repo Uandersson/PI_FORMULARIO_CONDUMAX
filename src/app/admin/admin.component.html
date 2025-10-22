@@ -1,7 +1,13 @@
 <div class="page">
   <div class="panel">
+    <!-- LADO ESQUERDO -->
     <div class="left">
-      <img class="logo" src="/assets/imagens/LOGO-CONDUMAX-espanhol-branca-inicio.png" alt="Condumax" />
+      <img
+        class="logo"
+        src="/assets/imagens/LOGO-CONDUMAX-espanhol-branca-inicio.png"
+        alt="Condumax"
+      />
+
       <h1>Painel Administrativo</h1>
 
       <form class="form" [formGroup]="form" (ngSubmit)="createUser()">
@@ -20,16 +26,25 @@
         <button type="submit">Criar Conta</button>
       </form>
 
+      <!-- MENSAGEM DE FEEDBACK -->
+      <p *ngIf="mensagem" style="color:#ffcc00; font-size:14px; margin-top:10px;">
+        {{ mensagem }}
+      </p>
+
+      <!-- LISTAGEM DE USUÁRIOS -->
       <div *ngIf="usuarios.length" style="margin-top:20px;">
         <h3 style="margin:10px 0;">Usuários Criados:</h3>
         <ul style="font-size:14px; color:#9fb3c9; list-style:none; padding:0;">
-          <li *ngFor="let u of usuarios">• {{ u.user }} ({{ u.role }})</li>
+          <li *ngFor="let u of usuarios">
+            • {{ u.user }} ({{ u.role }})
+          </li>
         </ul>
       </div>
 
       <button (click)="logout()" style="margin-top:16px;">Sair</button>
     </div>
 
+    <!-- LADO DIREITO -->
     <div class="right">
       <div class="overlay"></div>
       <div class="welcome">

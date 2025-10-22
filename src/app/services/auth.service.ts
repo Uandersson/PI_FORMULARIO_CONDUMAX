@@ -1,8 +1,13 @@
-// src/app/services/auth.service.ts
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { delay, map } from 'rxjs/operators';
+
+export interface Usuario {
+  user: string;
+  senha: string;
+  role: 'admin' | 'user';
+}
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -16,30 +21,41 @@ export class AuthService {
         const data = JSON.parse(saved);
         this.logged = !!data.logged;
         this.role = data.role ?? null;
-      } catch { /* ignore parse error */ }
+      } catch {}
+    }
+
+    // Garante usuário admin padrão
+    const usuarios = this.getUsuarios();
+    if (!usuarios.find(u => u.user === 'admin')) {
+      usuarios.push({ user: 'admin', senha: '1234', role: 'admin' });
+      this.saveUsuarios(usuarios);
     }
   }
 
-  // Retorna { ok, role } sempre (nunca undefined)
+  // === UTILITÁRIOS ===
+  private getUsuarios(): Usuario[] {
+    const raw = localStorage.getItem('usuarios');
+    return raw ? JSON.parse(raw) : [];
+  }
+
+  private saveUsuarios(users: Usuario[]) {
+    localStorage.setItem('usuarios', JSON.stringify(users));
+  }
+
+  // === LOGIN ===
   login(user: string, senha: string): Observable<{ ok: boolean; role: 'admin' | 'user' | null }> {
     return of({ user, senha }).pipe(
-      delay(400),
+      delay(300),
       map(({ user, senha }) => {
-        let ok = false;
-        let role: 'admin' | 'user' | null = null;
+        const usuarios = this.getUsuarios();
+        const found = usuarios.find(u => u.user === user && u.senha === senha);
 
-        if (user === 'admin' && senha === '1234') {
-          ok = true;
-          role = 'admin';
-        } else if (user && senha) {
-          ok = true;
-          role = 'user';
-        }
-
-        this.logged = ok;
-        this.role = role;
+        const ok = !!found;
+        const role = found ? found.role : null;
 
         if (ok) {
+          this.logged = true;
+          this.role = role;
           localStorage.setItem('auth', JSON.stringify({ logged: true, role }));
         } else {
           localStorage.removeItem('auth');
@@ -50,6 +66,7 @@ export class AuthService {
     );
   }
 
+  // === LOGOUT ===
   logout(): void {
     this.logged = false;
     this.role = null;
@@ -57,6 +74,29 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  isLogged(): boolean { return this.logged; }
-  getRole(): 'admin' | 'user' | null { return this.role; }
+  // === CRUD DE USUÁRIOS ===
+  criarUsuario(user: string, senha: string, role: 'admin' | 'user'): boolean {
+    const usuarios = this.getUsuarios();
+
+    if (usuarios.find(u => u.user === user)) {
+      return false;
+    }
+
+    usuarios.push({ user, senha, role });
+    this.saveUsuarios(usuarios);
+    return true;
+  }
+
+  listarUsuarios(): Usuario[] {
+    return this.getUsuarios();
+  }
+
+  // === STATUS ===
+  isLogged(): boolean {
+    return this.logged;
+  }
+
+  getRole(): 'admin' | 'user' | null {
+    return this.role;
+  }
 }

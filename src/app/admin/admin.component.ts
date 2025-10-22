@@ -1,9 +1,9 @@
 // src/app/admin/admin.component.ts
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { AuthService, Usuario } from '../services/auth.service';
 
 @Component({
   selector: 'app-admin',
@@ -12,8 +12,9 @@ import { AuthService } from '../services/auth.service';
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
-export class AdminComponent {
-  usuarios: any[] = [];
+export class AdminComponent implements OnInit {
+  usuarios: Usuario[] = [];
+  mensagem = '';
 
   form = this.fb.group({
     user: ['', Validators.required],
@@ -23,11 +24,36 @@ export class AdminComponent {
 
   constructor(private fb: FormBuilder, private auth: AuthService, private router: Router) {}
 
+  ngOnInit() {
+    this.carregarUsuarios();
+  }
+
+  carregarUsuarios() {
+    this.usuarios = this.auth.listarUsuarios();
+  }
+
   createUser() {
-    if (this.form.valid) {
-      this.usuarios.push(this.form.value);
-      this.form.reset({ role: 'user' });
+    this.mensagem = '';
+
+    if (this.form.invalid) {
+      this.mensagem = 'Preencha todos os campos.';
+      return;
     }
+
+    // Garantir que role seja do tipo correto
+    const { user, senha, role } = this.form.value;
+    const roleTyped = role as 'user' | 'admin';
+
+    const sucesso = this.auth.criarUsuario(user!, senha!, roleTyped);
+
+    if (!sucesso) {
+      this.mensagem = 'Usuário já existe.';
+      return;
+    }
+
+    this.mensagem = 'Usuário criado com sucesso!';
+    this.form.reset({ role: 'user' });
+    this.carregarUsuarios();
   }
 
   logout() {
