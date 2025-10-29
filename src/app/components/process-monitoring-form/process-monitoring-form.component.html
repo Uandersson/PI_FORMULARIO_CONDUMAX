@@ -1,4 +1,3 @@
-<p>process-monitoring-form works!</p>
 <div class="page-container" *ngIf="formConfig">
   <div class="header">
     <div class="logo">Condumax</div>
@@ -21,12 +20,12 @@
 
   <table>
     <tr>
-      <td [attr.colspan]="formConfig.generalInfo.rows[0].length" class="section-title">{{ formConfig.generalInfo.title }}</td>
+      <td [attr.colspan]="formConfig.generalInfo.rows[0].length" class="section-title">{{ formConfig.generalInfo.title }} (Folha {{ currentPageIndex + 1 }} de {{ pages.length }})</td>
     </tr>
     <tr *ngFor="let row of formConfig.generalInfo.rows">
       <td *ngFor="let field of row" [attr.colspan]="field.colspan" [attr.rowspan]="field.rowspan" [style]="field.style">
         <span *ngIf="field.label">{{ field.label }} </span>
-        <input *ngIf="field.model" type="text" [(ngModel)]="formData[field.model]">
+        <input *ngIf="field.model" type="text" [(ngModel)]="pages[currentPageIndex][field.model]" [disabled]="isReadOnly">
       </td>
     </tr>
   </table>
@@ -45,7 +44,7 @@
     </tr>
     <tr *ngFor="let i of [].constructor(formConfig.rawMaterials.rows); let index = index">
       <td>Material {{ index + 1 }}</td>
-      <td *ngFor="let j of [].constructor(formConfig.rawMaterials.headers.length - 1)"><input type="text" /></td>
+      <td *ngFor="let j of [].constructor(formConfig.rawMaterials.headers.length - 1)"><input type="text" [disabled]="isReadOnly" /></td>
     </tr>
   </table>
 
@@ -61,14 +60,14 @@
     </tr>
     <tr *ngFor="let item of formConfig.processChecklist.items; let i = index">
       <td>{{ item.left.label }}</td>
-      <td class="checkbox-cell"><input type="checkbox" [(ngModel)]="formData[item.left.model].ok" (change)="toggleCheckbox(formData[item.left.model], 'ok')"></td>
-      <td class="checkbox-cell"><input type="checkbox" [(ngModel)]="formData[item.left.model].nok" (change)="toggleCheckbox(formData[item.left.model], 'nok')"></td>
+      <td class="checkbox-cell"><input type="checkbox" [(ngModel)]="pages[currentPageIndex][item.left.model].ok" (change)="toggleCheckbox(pages[currentPageIndex][item.left.model], 'ok')" [disabled]="isReadOnly"></td>
+      <td class="checkbox-cell"><input type="checkbox" [(ngModel)]="pages[currentPageIndex][item.left.model].nok" (change)="toggleCheckbox(pages[currentPageIndex][item.left.model], 'nok')" [disabled]="isReadOnly"></td>
       <td *ngIf="i === 0" [attr.rowspan]="formConfig.processChecklist.items.length" colspan="2">
           <table class="nested-table-full-border">
               <tr *ngFor="let rightItem of formConfig.processChecklist.items">
                   <td style="width: 80%;">{{ rightItem.right.label }}</td>
-                  <td class="checkbox-cell"><input type="checkbox" [(ngModel)]="formData[rightItem.right.model].ok" (change)="toggleCheckbox(formData[rightItem.right.model], 'ok')"></td>
-                  <td class="checkbox-cell"><input type="checkbox" [(ngModel)]="formData[rightItem.right.model].nok" (change)="toggleCheckbox(formData[rightItem.right.model], 'nok')"></td>
+                  <td class="checkbox-cell"><input type="checkbox" [(ngModel)]="pages[currentPageIndex][rightItem.right.model].ok" (change)="toggleCheckbox(pages[currentPageIndex][rightItem.right.model], 'ok')" [disabled]="isReadOnly"></td>
+                  <td class="checkbox-cell"><input type="checkbox" [(ngModel)]="pages[currentPageIndex][rightItem.right.model].nok" (change)="toggleCheckbox(pages[currentPageIndex][rightItem.right.model], 'nok')" [disabled]="isReadOnly"></td>
               </tr>
           </table>
       </td>
@@ -82,7 +81,7 @@
               <div class="grid-item">
                   <table class="nested-table">
                       <tr *ngFor="let item of formConfig.processChecklist.verificationSection.items">
-                          <td>{{ item.label }} <input type="text" [(ngModel)]="formData[item.model]"></td>
+                          <td>{{ item.label }} <input type="text" [(ngModel)]="pages[currentPageIndex][item.model]" [disabled]="isReadOnly"></td>
                       </tr>
                   </table>
               </div>
@@ -97,8 +96,8 @@
                       <tbody>
                           <tr *ngFor="let item of formConfig.processChecklist.testsSection.items">
                               <td><span [innerHTML]="item.label"></span></td>
-                              <td><input type="text" [(ngModel)]="formData[item.model + '_inicio']"></td>
-                              <td><input type="text" [(ngModel)]="formData[item.model + '_fim']"></td>
+                              <td><input type="text" [(ngModel)]="pages[currentPageIndex][item.model + '_inicio']" [disabled]="isReadOnly"></td>
+                              <td><input type="text" [(ngModel)]="pages[currentPageIndex][item.model + '_fim']" [disabled]="isReadOnly"></td>
                           </tr>
                       </tbody>
                   </table>
@@ -132,10 +131,13 @@
         <td style="width:50%;">
             <div *ngFor="let metric of formConfig.insulationQuality.dimensional.metrics" class="metric-item">
                 <span>{{ metric.label }}</span>
-                <input type="text" [(ngModel)]="formData[metric.model]">
+                <input type="text" [(ngModel)]="pages[currentPageIndex][metric.model]" [disabled]="isReadOnly">
             </div>
         </td>
     </tr>
+    <!-- Adicionando linhas vazias para compensar rowspan se necessário -->
+    <tr></tr>
+    <tr></tr>
   </table>
 
   <table style="margin-top: 20px;">
@@ -151,14 +153,14 @@
       <td *ngFor="let option of formConfig.tools.cleaning.options">{{ option.label }}</td>
     </tr>
     <tr>
-      <td *ngFor="let header of formConfig.tools.headers"><input type="text" [(ngModel)]="formData['tool_' + header]"></td>
+      <td *ngFor="let header of formConfig.tools.headers"><input type="text" [(ngModel)]="pages[currentPageIndex]['tool_' + header]" [disabled]="isReadOnly"></td>
       <td *ngFor="let option of formConfig.tools.cleaning.options" class="checkbox-cell">
-        <input type="checkbox" [(ngModel)]="formData[option.model]" (change)="toggleCleaningCheckbox(option.model)">
+        <input type="checkbox" [(ngModel)]="pages[currentPageIndex][option.model]" (change)="toggleCleaningCheckbox(option.model)" [disabled]="isReadOnly">
       </td>
-      <td><input type="text" [(ngModel)]="formData.rnc"></td>
+      <td><input type="text" [(ngModel)]="pages[currentPageIndex].rnc" [disabled]="isReadOnly"></td>
       <td colspan="2">
-        <input type="checkbox" [(ngModel)]="formData.laudo.aprovado" (change)="toggleCheckbox(formData.laudo, 'aprovado')"> Aprovado
-        <input type="checkbox" [(ngModel)]="formData.laudo.reprovado" (change)="toggleCheckbox(formData.laudo, 'reprovado')"> Reprovado
+        <input type="checkbox" [(ngModel)]="pages[currentPageIndex].laudo.aprovado" (change)="toggleCheckbox(pages[currentPageIndex].laudo, 'aprovado')" [disabled]="isReadOnly"> Aprovado
+        <input type="checkbox" [(ngModel)]="pages[currentPageIndex].laudo.reprovado" (change)="toggleCheckbox(pages[currentPageIndex].laudo, 'reprovado')" [disabled]="isReadOnly"> Reprovado
       </td>
     </tr>
   </table>
@@ -170,4 +172,24 @@
       <td style="width: 34%;" class="attention-box">{{ formConfig.footer.attention }}</td>
     </tr>
   </table>
-</div>
+
+  <!-- ############################################################### -->
+  <!-- SEÇÃO DE PAGINAÇÃO E AÇÕES (ADICIONADA NO FINAL) -->
+  <!-- ############################################################### -->
+  <div class="pagination-controls">
+    <button (click)="previousPage()" [disabled]="currentPageIndex === 0">Anterior</button>
+    <div class="page-indicators">
+      <span *ngFor="let page of pages; let i = index" (click)="goToPage(i)" [class.active]="i === currentPageIndex">{{ i + 1 }}</span>
+    </div>
+    <button (click)="nextPage()" [disabled]="currentPageIndex === pages.length - 1">Próxima</button>
+  </div>
+
+  <div class="form-actions">
+    <button type="button" (click)="addPage()" *ngIf="!isReadOnly" title="Adiciona uma nova folha em branco ao final">+ Adicionar Nova Folha</button>
+    <button type="button" (click)="removeCurrentPage()" [disabled]="isReadOnly || pages.length <= 1">Remover Página</button>
+    <button type="button" (click)="goBack()">Voltar</button> <!-- BOTÃO VOLTAR -->
+    <button type="button" *ngIf="!isReadOnly" (click)="submitAndClear()">Salvar e Finalizar</button>
+  </div>
+
+</div> <!-- Este é o fechamento do page-container principal -->
+

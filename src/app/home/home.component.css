@@ -1,3 +1,4 @@
+/* ===== FUNDO ===== */
 .home-page {
   padding: 24px;
   font-family: 'Lato', Arial, sans-serif;
@@ -14,14 +15,17 @@
 }
 
 .home-header .logo {
-  width: 120px;
+  width: 120px; /* Ajuste o tamanho do logo conforme necessário */
+  height: auto; /* Mantém a proporção */
 }
 
 .home-actions {
   display: flex;
   justify-content: space-between;
+  align-items: center; /* Alinha verticalmente */
   margin-bottom: 16px;
   gap: 12px;
+  flex-wrap: wrap; /* Permite quebrar linha em telas menores */
 }
 
 .search-box {
@@ -32,74 +36,307 @@
 .search-box input {
   padding: 8px 12px;
   border-radius: 8px;
-  border: 1px solid #233048;
+  border: 1px solid #2e2d81;
   background: #0a1220;
   color: #e7eefc;
   outline: none;
+  font-size: 0.9em;
+}
+
+.search-box input::placeholder {
+    color: #9fb3c9;
 }
 
 .search-box button {
   padding: 0 12px;
   border: none;
   border-radius: 8px;
-  background: #28d7ff;
+  background: #28d7ff; /* Cor Ciano */
+  color: #02121a; /* Texto escuro para contraste */
   cursor: pointer;
+  font-size: 1.1em; /* Ícone um pouco maior */
 }
 
-.add-btn {
-  background: #4de1ff;
+/* Ajuste no nome da classe do botão cadastrar */
+.btn-cadastrar {
+  background: #28d7ff; /* Cor Ciano */
+  color: #02121a; /* Texto escuro */
   border: none;
-  padding: 8px 16px;
+  padding: 9px 16px; /* Ajuste no padding para alinhar altura com input */
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
+  text-transform: uppercase;
+  font-size: 0.85em;
+  white-space: nowrap; /* Impede que o texto quebre linha */
+}
+
+.btn-cadastrar:hover {
+    opacity: 0.9;
+}
+
+/* ===== ESTILOS PARA A LISTA DE PASTAS ===== */
+
+.folder-list-container {
+  margin-top: 30px;
+}
+
+.folder-list-container h2 {
+  color: #9fb3c9;
+  margin-bottom: 15px;
+  font-size: 1.2em;
+  text-align: center;
+}
+
+.folders {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Layout responsivo */
+  gap: 20px;
+}
+
+.folder-item {
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 1px solid #233048;
+  border-radius: 8px;
+  padding: 25px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.folder-item:hover {
+  background-color: rgba(35, 48, 72, 0.7); /* #233048 com mais opacidade */
+  transform: translateY(-3px);
+}
+
+.folder-icon {
+  font-size: 2.5em; /* Tamanho do ícone */
+  color: #f6b352; /* Cor Laranja */
+}
+
+.folder-name {
+  color: #e7eefc;
+  font-weight: 500;
+  font-size: 1.8em; /* <-- AUMENTADO AINDA MAIS o tamanho da fonte */
+  word-break: break-word; /* Garante que nomes longos quebrem linha */
+}
+
+
+/* ===== ESTILOS PARA A LISTA DE MÁQUINAS ===== */
+.machine-list-container {
+    margin-top: 30px;
+}
+
+.list-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #233048;
+}
+
+.list-header h2 {
+    color: #e7eefc;
+    margin: 0;
+    font-size: 1.5em;
+}
+
+/* Botão voltar na lista de máquinas */
+.list-header .back-button {
+  background-color: #4a4a70;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background-color 0.3s ease;
+}
+
+.list-header .back-button:hover {
+  background-color: #3a3a5a;
 }
 
 .cadernos-table {
   width: 100%;
   border-collapse: collapse;
+  /* margin-top: 20px; */ /* Removido pois já há margem no container */
 }
 
 .cadernos-table th,
 .cadernos-table td {
-  padding: 10px;
+  padding: 12px 15px; /* Mais padding */
   border-bottom: 1px solid #233048;
   text-align: left;
+  vertical-align: middle; /* Alinha o conteúdo verticalmente */
 }
 
 .cadernos-table th {
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.5); /* Fundo semi-transparente para cabeçalho */
+  color: #9fb3c9; /* Cor mais suave para cabeçalho */
+  text-transform: uppercase;
+  font-size: 0.8em;
+  letter-spacing: 0.5px;
 }
 
+/* Estilos para botões dentro da tabela */
 .cadernos-table td button {
   margin-right: 6px;
-  padding: 4px 8px;
+  padding: 5px 10px; /* Padding ajustado */
   border: none;
   border-radius: 6px;
   cursor: pointer;
+  font-size: 0.85em;
+  transition: opacity 0.2s ease;
+}
+.cadernos-table td button:last-child {
+  margin-right: 0;
 }
 
 .cadernos-table td button:hover {
   opacity: 0.8;
 }
 
+/* Cores específicas para botões de ação */
+.action-button.view-button {
+    background-color: #3f72af; /* Azul */
+    color: white;
+}
+.action-button.edit-button {
+    background-color: #f6b352; /* Laranja */
+    color: #333;
+}
+.action-button.delete-button {
+    background-color: #e94560; /* Vermelho */
+    color: white;
+}
+
+
 .empty-message {
   margin-top: 20px;
+  padding: 20px;
   text-align: center;
   opacity: 0.7;
+  color: #9fb3c9; /* Cor ajustada */
 }
 
 .logout-section {
-  margin-top: 24px;
+  margin-top: 30px; /* Mais espaço acima */
+  padding-bottom: 30px; /* Espaço abaixo */
   text-align: center;
 }
 
 .logout-section button {
-  padding: 10px 18px;
+  padding: 10px 25px; /* Botão maior */
   border: 0;
-  border-radius: 12px;
-  background: #28d7ff;
-  color: #02121a;
+  border-radius: 8px; /* Borda ajustada */
+  background: #28d7ff; /* Cor Ciano */
+  color: #02121a; /* Texto escuro */
   font-weight: 700;
   cursor: pointer;
+  transition: opacity 0.2s ease;
 }
+
+.logout-section button:hover {
+    opacity: 0.9;
+}
+
+
+/* ===== ESTILOS PARA A CAPA INTERMEDIÁRIA ===== */
+
+.cover-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* Ajusta altura descontando header/footer - ajuste '150px' se necessário */
+  min-height: calc(100vh - 150px);
+  padding: 40px;
+  color: #e7eefc; /* Cor do texto principal */
+  /* Mantém o fundo da página, se necessário, ou defina um fundo específico */
+  background: inherit;
+}
+
+.cover-header {
+  text-align: center;
+  margin-bottom: 40px;
+  border-bottom: 1px solid #233048; /* Linha separadora */
+  padding-bottom: 20px;
+  width: 100%;
+  max-width: 600px; /* Limita a largura do cabeçalho */
+}
+
+.cover-header h1 {
+  font-size: 2em;
+  margin-bottom: 10px;
+  color: #e7eefc; /* Cor do título */
+}
+
+.cover-header p {
+  font-size: 1.1em;
+  color: #9fb3c9; /* Cor secundária (muted) */
+}
+
+.cover-actions {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.cover-actions p {
+  margin-bottom: 25px; /* Mais espaço antes dos botões */
+  font-size: 1.1em;
+  color: #9fb3c9;
+}
+
+.cover-button {
+  padding: 12px 25px;
+  font-size: 1.1em;
+  margin: 5px 10px; /* Adiciona margem vertical para quebra de linha */
+  min-width: 200px;
+  border-radius: 8px; /* Consistência com outros botões */
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  border: none;
+}
+
+.cover-button:hover {
+    opacity: 0.9;
+}
+
+/* Herda as cores dos botões de ação da tabela */
+.cover-button.view-button {
+    background-color: #3f72af; /* Azul */
+    color: white;
+}
+.cover-button.edit-button {
+    background-color: #f6b352; /* Laranja */
+    color: #333;
+}
+
+
+.cover-footer {
+  margin-top: 30px;
+}
+
+/* Botão voltar na capa */
+.cover-footer .back-button {
+  background-color: #4a4a70; /* Cor neutra/secundária */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px; /* Consistência */
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
+}
+
+.cover-footer .back-button:hover {
+  background-color: #3a3a5a;
+}
+
+

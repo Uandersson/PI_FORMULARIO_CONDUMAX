@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core'; // Adicionado OnInit, OnDestroy, HostListener
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router'; // Adicionado ActivatedRoute, Router
 
 @Component({
   selector: 'app-process-monitoring-form',
@@ -12,10 +13,11 @@ import { CommonModule } from '@angular/common';
   templateUrl: './process-monitoring-form.component.html',
   styleUrls: ['./process-monitoring-form.component.css']
 })
-export class ProcessMonitoringFormComponent {
+// Implementa OnInit e OnDestroy para controle do ciclo de vida
+export class ProcessMonitoringFormComponent implements OnInit, OnDestroy {
 
-  // Usando 'any' para simplificar e remover os erros de tipagem
-  formConfig: any = {
+  // --- Propriedades Existentes ---
+  formConfig: any = { // Mantido como estava
     header: {
       title: 'REGISTRO DE MONITORAMENTO DO PROCESSO',
       subtitle: 'EXTRUSÃO – COMERCIAL',
@@ -117,41 +119,200 @@ export class ProcessMonitoringFormComponent {
     }
   };
 
-  // Usando 'any' aqui também para máxima simplicidade
-  formData: any = {
-    equipMedicao: { ok: false, nok: false },
-    coberturaOxi: { ok: false, nok: false },
-    sentidoTorcao: { ok: false, nok: false },
-    limpezaSecador: { ok: false, nok: false },
-    laudo: { aprovado: false, reprovado: false },
-    limpezaTela: false,
-    limpezaRosca: false,
-    limpezaGeral: false,
-    naoFeita: false,
-  };
+  // --- Propriedades Adicionadas ---
+  isReadOnly: boolean = false; // Controla o modo leitura/edição
+  pages: any[] = []; // Array que guardará os dados de cada folha
+  currentPageIndex: number = 0; // Índice da folha atual
+  private readonly storageKey: string = 'formState_'; // Chave para o localStorage
+  private formId: string | null = null; // ID do formulário (da rota ou 'novo')
 
-  toggleCheckbox(model: any, type: 'ok' | 'nok' | 'aprovado' | 'reprovado'): void {
-    if (model[type]) {
-      const otherType = type === 'ok' ? 'nok' : (type === 'nok' ? 'ok' : (type === 'aprovado' ? 'reprovado' : 'aprovado'));
-      model[otherType] = false;
+  // Injeta ActivatedRoute e Router
+  constructor(private route: ActivatedRoute, private router: Router) {}
+
+  // --- Métodos do Ciclo de Vida (Adicionados) ---
+  ngOnInit(): void {
+    this.isReadOnly = this.route.snapshot.data['isReadOnly'] || false;
+    this.formId = this.route.snapshot.paramMap.get('id') || 'novo';
+    this.loadStateFromStorage(); // Carrega dados salvos ou cria folhas novas
+  }
+
+  ngOnDestroy(): void {
+    if (!this.isReadOnly) { // Só salva se não estiver em modo leitura
+      this.saveStateToStorage();
     }
   }
 
-  toggleCleaningCheckbox(selectedModel: string): void {
+  // Salva ao fechar/recarregar a página
+  @HostListener('window:beforeunload', ['$event'])
+  unloadNotification($event: any): void {
+    if (!this.isReadOnly) {
+      this.saveStateToStorage();
+    }
+  }
+
+  // --- Função para Criar Folha em Branco (Baseado no seu formData original) ---
+  private createBlankPage(): any {
+    // Retorna a estrutura de uma folha vazia, usando a estrutura do seu formData
+    return {
+      // Info Gerais (baseado nos 'model' do formConfig.generalInfo.rows)
+      codProduto: '', lote: '', data: '', opInicio: '', numTurno: '', turno: '',
+      opFim: '', horaInicio: '', qtdProduzida: '', equipamentos: '', horaTermino: '',
+
+      // Materiais (sem dados aqui, pois não estavam ligados ao formData)
+
+      // Checklist (baseado nos 'model' do formConfig.processChecklist.items)
+      equipMedicao: { ok: false, nok: false }, coberturaOxi: { ok: false, nok: false },
+      sentidoTorcao: { ok: false, nok: false }, limpezaSecador: { ok: false, nok: false },
+
+      // Verificação (baseado nos 'model' do formConfig.processChecklist.verificationSection.items)
+      cor: '', formacaoCorda: '', qtdCoroco: '', asperezas: '', sparkTest: '', dificuldadeCondutor: '',
+
+      // Testes (baseado nos 'model' do formConfig.processChecklist.testsSection.items)
+      resistenciaEletrica_inicio: '', resistenciaEletrica_fim: '',
+      cabosTubo_inicio: '', cabosTubo_fim: '',
+      testeTorcao_inicio: '', testeTorcao_fim: '',
+      testeAderencia_inicio: '', testeAderencia_fim: '',
+
+      // Qualidade Isolação (baseado nos 'model' do formConfig.insulationQuality.dimensional.metrics)
+      concentricidade: '', espessuraMedia: '', pontoMinimo: '',
+
+      // Ferramentas (baseado nos 'model' do formConfig.tools)
+      tool_Blco: '', tool_Matriz: '', tool_Cabeçote: '',
+      limpezaTela: false, limpezaRosca: false, limpezaGeral: false, naoFeita: false,
+      rnc: '',
+      laudo: { aprovado: false, reprovado: false },
+    };
+  }
+
+  // --- Métodos de Paginação (Adicionados) ---
+  addPage(): void {
+    if (this.isReadOnly) return;
+    this.pages.push(this.createBlankPage());
+    this.goToPage(this.pages.length - 1); // Vai para a nova página
+  }
+
+  goToPage(index: number): void {
+    if (index >= 0 && index < this.pages.length) {
+      this.currentPageIndex = index;
+    }
+  }
+
+  nextPage(): void {
+    if (this.currentPageIndex < this.pages.length - 1) {
+      this.currentPageIndex++;
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPageIndex > 0) {
+      this.currentPageIndex--;
+    }
+  }
+
+  // --- Métodos de Persistência (Adicionados) ---
+  private loadStateFromStorage(): void {
+    const savedState = localStorage.getItem(this.storageKey + this.formId);
+    if (savedState) {
+      this.pages = JSON.parse(savedState);
+      // Garante que o índice não seja inválido se as páginas salvas forem menos que as atuais
+      this.currentPageIndex = Math.min(this.currentPageIndex, this.pages.length - 1);
+      if (this.currentPageIndex < 0) this.currentPageIndex = 0; // Garante que não seja negativo
+      console.log(`Estado do formulário '${this.formId}' restaurado do localStorage.`);
+    } else {
+      // Se não houver estado salvo, cria as 10 folhas iniciais
+      this.pages = Array.from({ length: 10 }, () => this.createBlankPage());
+      this.currentPageIndex = 0;
+      console.log('Novo formulário com 10 folhas em branco criado.');
+    }
+  }
+
+  private saveStateToStorage(): void {
+    if (this.isReadOnly) return; // Nunca salva se estiver em modo de visualização
+    localStorage.setItem(this.storageKey + this.formId, JSON.stringify(this.pages));
+    console.log(`Estado do formulário '${this.formId}' salvo no localStorage.`);
+  }
+
+  // --- Métodos de Ação (Adicionados/Modificados) ---
+  goBack(): void {
+    // Idealmente, perguntar se quer salvar antes de sair, mas por ora, só navega
+    this.router.navigate(['/home']); // Navega para a home (ajuste se a rota for outra)
+  }
+
+  // Salva uma última vez, limpa o estado do localStorage e navega
+  submitAndClear(): void {
+    if (this.isReadOnly) return;
+
+    // 1. Salva o estado atual uma última vez
+    this.saveStateToStorage();
+
+    // 2. Aqui virá a lógica para enviar os dados para a API (backend)
+    console.log("ENVIANDO DADOS FINAIS PARA O BACKEND:", this.pages);
+
+    // 3. Limpa o estado salvo no navegador após o envio bem-sucedido
+    localStorage.removeItem(this.storageKey + this.formId);
+    console.log(`Estado do formulário '${this.formId}' removido do localStorage.`);
+
+    // 4. Navega de volta para a home
+    this.router.navigate(['/home']); // Ajuste a rota se necessário
+  }
+
+
+  // --- Métodos Existentes (Modificados para usar 'pages') ---
+  toggleCheckbox(model: any, type: string): void {
+    if (this.isReadOnly) return;
+    // O 'model' agora é uma propriedade DENTRO da página atual
+    const currentPageData = this.pages[this.currentPageIndex];
+    const targetModel = currentPageData[model]; // Acessa o objeto dentro da página (ex: laudo)
+
+    // Lógica original, mas aplicada ao targetModel
+    if (targetModel && targetModel[type]) {
+        const otherType = type === 'ok' ? 'nok' : (type === 'nok' ? 'ok' : (type === 'aprovado' ? 'reprovado' : 'aprovado'));
+        if (otherType in targetModel) {
+            targetModel[otherType] = false;
+        }
+    } else if (targetModel && typeof targetModel === 'object') {
+       // Se o modelo for um objeto (como laudo) mas a propriedade não existir,
+       // apenas garante que a outra seja falsa se esta for marcada
+       if (targetModel[type]) {
+           const otherType = type === 'ok' ? 'nok' : (type === 'nok' ? 'ok' : (type === 'aprovado' ? 'reprovado' : 'aprovado'));
+            if (otherType in targetModel) {
+                targetModel[otherType] = false;
+            }
+       }
+    }
+  }
+
+
+  toggleCleaningCheckbox(selectedModelKey: string): void {
+      if (this.isReadOnly) return;
+      const currentPageData = this.pages[this.currentPageIndex];
       this.formConfig.tools.cleaning.options.forEach((option: any) => {
-          if (option.model !== selectedModel) {
-              this.formData[option.model] = false;
+          if (option.model !== selectedModelKey) {
+              // Acessa a propriedade na página atual
+              currentPageData[option.model] = false;
           }
       });
   }
-}
 
-export class ProcessMonitoringFormComponentV2 {
-  folhas = Array.from({ length: 10 }, (_, i) => i + 1);
+  removeCurrentPage(): void {
+  if (this.isReadOnly) return; // Não permite remover no modo leitura
+  if (this.pages.length <= 1) return; // Sempre deixa pelo menos uma página
 
-  adicionarFolha() {
-    const novaFolha = this.folhas.length + 1;
-    this.folhas.push(novaFolha);
+  // Remove a página atual
+  this.pages.splice(this.currentPageIndex, 1);
+
+  // Ajusta o índice da página atual
+  if (this.currentPageIndex >= this.pages.length) {
+    this.currentPageIndex = this.pages.length - 1;
   }
+
+  // Atualiza as páginas visíveis (se estiver usando paginação)
+  this.updateVisiblePages();
+}
+  updateVisiblePages() {
+    throw new Error('Method not implemented.');
+  }
+  // Removido: O formData original não é mais usado diretamente
+  // formData: any = { ... };
 }
 
