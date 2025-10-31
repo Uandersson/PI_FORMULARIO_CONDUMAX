@@ -1,44 +1,19 @@
 <div class="page">
   <div class="panel">
-    <!-- ESQUERDA -->
-    <div class="left">
-      <img
-        class="logo"
-        src="/assets/imagens/LOGO-CONDUMAX-espanhol-branca-inicio.png"
-        alt="Condumax"
-      />
+    <img class="logo" src="/assets/imagens/LOGO-CONDUMAX-espanhol-branca-inicio.png" alt="Condumax" />
 
-      <h1>Entrar</h1>
+    <h1>Painel Administrativo</h1>
 
-      <form class="form" (ngSubmit)="submit()" [formGroup]="form">
-        <label>Usuário</label>
-        <input type="text" formControlName="user" placeholder="Digite seu usuário" />
-        <small *ngIf="form.controls.user.touched && form.controls.user.invalid">
-          Informe o usuário.
-        </small>
-        
-        <label>Senha</label>
-        <input type="password" formControlName="senha" placeholder="Digite sua senha" />
-        <small *ngIf="form.controls.senha.touched && form.controls.senha.invalid">
-          Informe a senha.
-        </small>
+    <form [formGroup]="form" (ngSubmit)="login()">
+      <label>Usuário</label>
+      <input type="text" formControlName="user" placeholder="Digite o usuário" required />
 
-        <button type="submit" [disabled]="loading">
-          {{ loading ? 'Entrando...' : 'Entrar' }}
-        </button>
+      <label>Senha</label>
+      <input type="password" formControlName="senha" placeholder="Digite a senha" required />
 
-      </form>
+      <button type="submit" [disabled]="form.invalid">Entrar</button>
+    </form>
 
-      <p class="error" *ngIf="error">{{ error }}</p>
-    </div>
-
-    <!-- DIREITA -->
-    <div class="right">
-      <div class="overlay"></div>
-      <div class="welcome">
-        <h2>Bem-vindo(a) à Condumax!</h2>
-        <p>Conectando inovação e eficiência.</p>
-      </div>
-    </div>
+    <p class="mensagem-erro" *ngIf="erroLogin">Usuário ou senha inválidos</p>
   </div>
 </div>

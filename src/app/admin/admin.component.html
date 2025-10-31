@@ -1,56 +1,64 @@
 <div class="page">
-  <div class="panel">
-    <!-- LADO ESQUERDO -->
-    <div class="left">
-      <img
-        class="logo"
-        src="/assets/imagens/LOGO-CONDUMAX-espanhol-branca-inicio.png"
-        alt="Condumax"
-      />
+  <div class="admin-panel">
+    <header>
+      <h2>Gerenciamento de Usuários</h2>
+      <button (click)="logout()">Logout</button>
+    </header>
 
-      <h1>Painel Administrativo</h1>
-
-      <form class="form" [formGroup]="form" (ngSubmit)="createUser()">
-        <label>Usuário</label>
-        <input type="text" formControlName="user" placeholder="Novo usuário" />
-
-        <label>Senha</label>
-        <input type="password" formControlName="senha" placeholder="Senha" />
-
-        <label>Tipo</label>
+    <form [formGroup]="form" (ngSubmit)="salvarUsuario()">
+      <div class="form-grid">
+        <input
+          type="text"
+          formControlName="user"
+          placeholder="Usuário"
+          required
+        />
+        <input
+          type="password"
+          formControlName="senha"
+          placeholder="Senha"
+          required
+        />
         <select formControlName="role">
-          <option value="user">Usuário comum</option>
+          <option value="user">Usuário</option>
           <option value="admin">Administrador</option>
         </select>
-
-        <button type="submit">Criar Conta</button>
-      </form>
-
-      <!-- MENSAGEM DE FEEDBACK -->
-      <p *ngIf="mensagem" style="color:#ffcc00; font-size:14px; margin-top:10px;">
-        {{ mensagem }}
-      </p>
-
-      <!-- LISTAGEM DE USUÁRIOS -->
-      <div *ngIf="usuarios.length" style="margin-top:20px;">
-        <h3 style="margin:10px 0;">Usuários Criados:</h3>
-        <ul style="font-size:14px; color:#9fb3c9; list-style:none; padding:0;">
-          <li *ngFor="let u of usuarios">
-            • {{ u.user }} ({{ u.role }})
-          </li>
-        </ul>
       </div>
 
-      <button (click)="logout()" style="margin-top:16px;">Sair</button>
-    </div>
+      <button type="submit">
+        {{ editando ? 'Atualizar Usuário' : 'Criar Usuário' }}
+      </button>
 
-    <!-- LADO DIREITO -->
-    <div class="right">
-      <div class="overlay"></div>
-      <div class="welcome">
-        <h2>Gerencie Usuários</h2>
-        <p>Crie novas contas e defina permissões.</p>
-      </div>
+      <button *ngIf="editando" type="button" class="cancelar" (click)="cancelarEdicao()">
+        Cancelar
+      </button>
+    </form>
+
+    <hr />
+
+    <div class="lista">
+      <h3>Usuários Cadastrados</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Usuário</th>
+            <th>Função</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of usuarios">
+            <td>{{ u.user }}</td>
+            <td>{{ u.role }}</td>
+            <td>
+              <button (click)="editar(u)">Editar</button>
+              <button (click)="excluir(u.id)">Excluir</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p *ngIf="usuarios.length === 0">Nenhum usuário cadastrado.</p>
     </div>
   </div>
 </div>

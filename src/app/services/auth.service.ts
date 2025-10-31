@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { delay, map } from 'rxjs/operators';
+import { Observable, tap } from 'rxjs';
 
 export interface Usuario {
+  id?: number;
   user: string;
   senha: string;
   role: 'admin' | 'user';
@@ -11,57 +12,28 @@ export interface Usuario {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  private apiUrl = 'https://seuapp-production.up.railway.app'; // ✅ troque pela URL do seu backend no Railway
   private logged = false;
   private role: 'admin' | 'user' | null = null;
 
-  constructor(private router: Router) {
+  constructor(private http: HttpClient, private router: Router) {
     const saved = localStorage.getItem('auth');
     if (saved) {
-      try {
-        const data = JSON.parse(saved);
-        this.logged = !!data.logged;
-        this.role = data.role ?? null;
-      } catch {}
+      const data = JSON.parse(saved);
+      this.logged = !!data.logged;
+      this.role = data.role ?? null;
     }
-
-    // Garante usuário admin padrão
-    const usuarios = this.getUsuarios();
-    if (!usuarios.find(u => u.user === 'admin')) {
-      usuarios.push({ user: 'admin', senha: '1234', role: 'admin' });
-      this.saveUsuarios(usuarios);
-    }
-  }
-
-  // === UTILITÁRIOS ===
-  private getUsuarios(): Usuario[] {
-    const raw = localStorage.getItem('usuarios');
-    return raw ? JSON.parse(raw) : [];
-  }
-
-  private saveUsuarios(users: Usuario[]) {
-    localStorage.setItem('usuarios', JSON.stringify(users));
   }
 
   // === LOGIN ===
-  login(user: string, senha: string): Observable<{ ok: boolean; role: 'admin' | 'user' | null }> {
-    return of({ user, senha }).pipe(
-      delay(300),
-      map(({ user, senha }) => {
-        const usuarios = this.getUsuarios();
-        const found = usuarios.find(u => u.user === user && u.senha === senha);
-
-        const ok = !!found;
-        const role = found ? found.role : null;
-
-        if (ok) {
+  login(user: string, senha: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/login`, { user, senha }).pipe(
+      tap((res: any) => {
+        if (res.ok) {
           this.logged = true;
-          this.role = role;
-          localStorage.setItem('auth', JSON.stringify({ logged: true, role }));
-        } else {
-          localStorage.removeItem('auth');
+          this.role = res.role;
+          localStorage.setItem('auth', JSON.stringify({ logged: true, role: res.role }));
         }
-
-        return { ok, role };
       })
     );
   }
@@ -74,21 +46,21 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  // === CRUD DE USUÁRIOS ===
-  criarUsuario(user: string, senha: string, role: 'admin' | 'user'): boolean {
-    const usuarios = this.getUsuarios();
-
-    if (usuarios.find(u => u.user === user)) {
-      return false;
-    }
-
-    usuarios.push({ user, senha, role });
-    this.saveUsuarios(usuarios);
-    return true;
+  // === CRUD USUÁRIOS ===
+  listarUsuarios(): Observable<Usuario[]> {
+    return this.http.get<Usuario[]>(`${this.apiUrl}/usuarios`);
   }
 
-  listarUsuarios(): Usuario[] {
-    return this.getUsuarios();
+  criarUsuario(usuario: Usuario): Observable<any> {
+    return this.http.post(`${this.apiUrl}/usuarios`, usuario);
+  }
+
+  atualizarUsuario(id: number, usuario: Usuario): Observable<any> {
+    return this.http.put(`${this.apiUrl}/usuarios/${id}`, usuario);
+  }
+
+  excluirUsuario(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/usuarios/${id}`);
   }
 
   // === STATUS ===
