@@ -1,13 +1,9 @@
-<!-- ============================================= -->
-<!-- CABEÇALHO E AÇÕES (Sempre visíveis)        -->
-<!-- ============================================= -->
 <div class="home-page">
   <header class="home-header">
     <img src="/assets/imagens/LOGO-CONDUMAX-espanhol-branca-inicio.png" alt="Logo Condumax" class="logo" />
   </header>
 
   <div class="home-actions">
-    <!-- Caixa de busca SÓ APARECE se a capa NÃO estiver visível -->
     <div class="search-box" *ngIf="!maquinaSelecionadaCapa">
       <input type="text"
              [placeholder]="pastaSelecionada ? 'Buscar por máquina...' : 'Buscar por categoria ou máquina...'"
@@ -15,32 +11,25 @@
              (keyup.enter)="search()"/>
       <button (click)="search()">🔍</button>
     </div>
-
-    <!-- Botão Cadastrar SÓ APARECE se a capa NÃO estiver visível -->
-    <button class="btn-cadastrar" (click)="goCadastrar()" *ngIf="!maquinaSelecionadaCapa">+ Cadastrar Novo Caderno</button>
-
-    <!-- Espaçador para manter o alinhamento quando os botões somem (se usar space-between) -->
+    <button class="btn-cadastrar" (click)="goCadastrar()" *ngIf="!maquinaSelecionadaCapa">Cadernos Novos</button>
     <div *ngIf="maquinaSelecionadaCapa" style="flex-grow: 1;"></div>
   </div>
 
-  <!-- ============================================= -->
-  <!-- VISÃO 1: Lista de Pastas                   -->
-  <!-- ============================================= -->
   <div *ngIf="!pastaSelecionada && !maquinaSelecionadaCapa" class="folder-list-container">
-    <h2>Selecione uma Categoria:</h2>
+    <h2>Cadernos usados:</h2>
     <div class="folders">
+      
       <div *ngFor="let pasta of filteredPastas" class="folder-item" (click)="selecionarPasta(pasta)">
         <span class="folder-icon">📁</span>
         <span class="folder-name">{{ pasta.nome }}</span>
       </div>
+
       <p *ngIf="filteredPastas.length === 0 && searchTerm" class="empty-message">Nenhuma categoria encontrada para "{{ searchTerm }}".</p>
       <p *ngIf="pastas.length === 0 && !searchTerm" class="empty-message">Nenhuma categoria cadastrada.</p>
     </div>
   </div>
 
-  <!-- ============================================= -->
-  <!-- VISÃO 2: Lista de Máquinas (Dentro de uma Pasta) -->
-  <!-- ============================================= -->
+
   <div *ngIf="pastaSelecionada && !maquinaSelecionadaCapa" class="machine-list-container">
     <div class="list-header">
       <h2>Máquinas em: {{ pastaSelecionada.nome }}</h2>
@@ -59,7 +48,6 @@
           <td>{{ maquina.maquinas }}</td>
           <td>{{ maquina.mesAno }}</td>
           <td>
-            <!--<button class="action-button view-button" (click)="selecionarMaquinaParaCapa(maquina)">👁 Ver Detalhes</button>-->
             <button class="action-button edit-button" (click)="selecionarMaquinaParaCapa(maquina)">✏️ Acessar Caderno</button>
           </td>
         </tr>
@@ -73,9 +61,6 @@
     </table>
   </div>
 
-  <!-- ============================================= -->
-  <!-- VISÃO 3: Capa da Máquina Selecionada        -->
-  <!-- ============================================= -->
   <div *ngIf="maquinaSelecionadaCapa" class="cover-page-container">
     <div class="cover-header">
       <h1>Detalhes da Máquina: {{ maquinaSelecionadaCapa.maquinas }}</h1>
@@ -83,18 +68,15 @@
     </div>
     <div class="cover-actions">
       <p>Escolha uma ação para o caderno desta máquina:</p>
-     <!-- <button class="action-button view-button cover-button" (click)="verFormulario()">Visualizar Formulário</button>-->
-
-      <button class="action-button edit-button cover-button" (click)="editarFormulario()">Acessar Formulário</button> <!-- Nome do botão atualizado -->
+      <button class="action-button edit-button cover-button" (click)="editarFormulario()">Acessar Formulário</button>
     </div>
     <div class="cover-footer">
       <button class="back-button" (click)="voltarParaListaMaquinas()"> ← Voltar para Lista de Máquinas</button>
     </div>
   </div>
 
-  <!-- Botão de sair (Agora esconde se a capa estiver visível) -->
   <div class="logout-section" *ngIf="!maquinaSelecionadaCapa">
      <button (click)="sair()">Sair</button>
   </div>
+  
 </div>
-

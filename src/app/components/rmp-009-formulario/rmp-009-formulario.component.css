@@ -1,0 +1,52 @@
+.page-container {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ccc;
+  font-family: Arial, sans-serif;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.header-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  font-size: 13px;
+}
+
+.process-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.process-table th,
+.process-table td {
+  border: 1px solid #000;
+  text-align: center;
+  padding: 4px;
+}
+
+.process-table input {
+  width: 100%;
+  border: none;
+  text-align: center;
+  font-size: 12px;
+}
+
+.process-table input:focus {
+  outline: 1px solid #007bff;
+  background-color: #eef6ff;
+}
+
+.footer-info {
+  font-size: 12px;
+  margin-top: 15px;
+  border-top: 1px solid #000;
+  padding-top: 8px;
+}

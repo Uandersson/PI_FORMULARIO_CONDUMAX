@@ -1,3 +1,4 @@
+
 <div class="page-container" *ngIf="formConfig">
   <div class="header">
     <div class="logo">Condumax</div>
@@ -107,21 +108,44 @@
     </tr>
   </table>
 
+ <table>
+  <tr>
+      <td colspan="2" class="section-title">{{ formConfig.insulationQuality.title }}</td>
+  </tr>
+  <tr>
+      <td class="text-bold text-center" style="width:50%">{{ formConfig.insulationQuality.labels[0] }}</td>
+      <td class="text-bold text-center" style="width:50%">{{ formConfig.insulationQuality.labels[1] }}</td>
+  </tr>
+  <tr>
+      <!-- Quadro ESQUERDO (Início) -->
+      <td class="diagram-wrapper">
+        <div class="diagram-box">
+          <h4>Registrar valores encontrados Início:</h4>
+          <div class="diagram-circle">
+            <img *ngIf="pages[currentPageIndex]?.resistenciaEletrica_inicio_img" 
+                 [src]="pages[currentPageIndex].resistenciaEletrica_inicio_img" alt="Imagem Início">
+          </div>
+          <input type="file" accept="image/*" (change)="uploadImage($event, 'resistenciaEletrica_inicio_img')">
+          <div class="caption">Colar o anel sobre aqui do ponto inferior (PI)</div>
+        </div>
+      </td>
+
+      <!-- Quadro DIREITO (Final) -->
+      <td class="diagram-wrapper">
+        <div class="diagram-box">
+          <h4>Registrar os valores encontrados Final:</h4>
+          <div class="diagram-circle">
+            <img *ngIf="pages[currentPageIndex]?.resistenciaEletrica_fim_img" 
+                 [src]="pages[currentPageIndex].resistenciaEletrica_fim_img" alt="Imagem Final">
+          </div>
+          <input type="file" accept="image/*" (change)="uploadImage($event, 'resistenciaEletrica_fim_img')">
+          <div class="caption">Colar o anel sobre aqui do ponto inferior (PI)</div>
+        </div>
+      </td>
+  </tr>
+</table>
+
   <table>
-    <tr>
-        <td colspan="2" class="section-title">{{ formConfig.insulationQuality.title }}</td>
-    </tr>
-    <tr>
-        <td class="text-bold text-center" style="width:50%">{{ formConfig.insulationQuality.labels[0] }}</td>
-        <td class="text-bold text-center" style="width:50%">{{ formConfig.insulationQuality.labels[1] }}</td>
-    </tr>
-    <tr>
-        <td class="diagram-section">
-            <div class="diagram-container"><div class="diagram-circle"></div><div class="caption">Colar o anel sobre aqui do ponto inferior (PI)</div></div>
-            <div class="diagram-container"><div class="diagram-circle"></div><div class="caption">Colar o anel sobre aqui do ponto inferior (PI)</div></div>
-        </td>
-        <td></td>
-    </tr>
     <tr class="text-center text-bold">
         <td>Tipo de camada</td>
         <td>Dimensional</td>
@@ -192,4 +216,3 @@
   </div>
 
 </div> <!-- Este é o fechamento do page-container principal -->
-

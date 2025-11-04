@@ -1,0 +1,73 @@
+<div class="page-container">
+  <h2>REGISTRO DE MONITORAMENTO DO PROCESSO - MEDIÇÃO / EMBALAGEM - COMERCIAL</h2>
+
+  <div class="header-info">
+    <div><strong>RMP-009</strong></div>
+    <div>Revisão: 001 | Data: 01/04/2020</div>
+    <div>Plano de Controle Nº: 009</div>
+  </div>
+
+  <table class="process-table">
+    <thead>
+      <tr>
+        <th rowspan="2">ITEM</th>
+        <th rowspan="2">Código do Produto</th>
+        <th rowspan="2">Lote</th>
+        <th rowspan="2">Aterramento da Bobina</th>
+        <th rowspan="2">Realização conforme Plano de Controle</th>
+        <th colspan="2">Diâmetro Externo do Cabo (mm)</th>
+        <th colspan="2">Alongamento do Fio Hidramax Fio Lide (%)</th>
+        <th colspan="2">Oxidação do Cobre</th>
+        <th rowspan="2">Quantidade Produzida (m)</th>
+        <th colspan="2">Gravação - Acabamento</th>
+        <th rowspan="2">Nº de Falhas Spark Test</th>
+        <th rowspan="2">Confere equipamentos de medição e teste?</th>
+        <th rowspan="2">Turno</th>
+        <th rowspan="2">Registro do Operador</th>
+        <th rowspan="2">Data</th>
+        <th rowspan="2">Laudo A/R</th>
+      </tr>
+      <tr>
+        <th>Menor</th>
+        <th>Maior</th>
+        <th>Início</th>
+        <th>Final</th>
+        <th>TP-106</th>
+        <th>Aprovado/Reprovado</th>
+        <th>Início</th>
+        <th>Final</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let item of items; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td><input [(ngModel)]="item.codigo" /></td>
+        <td><input [(ngModel)]="item.lote" /></td>
+        <td><input [(ngModel)]="item.aterramento" /></td>
+        <td><input [(ngModel)]="item.planoControle" /></td>
+        <td><input [(ngModel)]="item.diametroMenor" /></td>
+        <td><input [(ngModel)]="item.diametroMaior" /></td>
+        <td><input [(ngModel)]="item.alongamentoInicio" /></td>
+        <td><input [(ngModel)]="item.alongamentoFinal" /></td>
+        <td><input [(ngModel)]="item.oxidacaoInicio" /></td>
+        <td><input [(ngModel)]="item.oxidacaoFinal" /></td>
+        <td><input [(ngModel)]="item.qtdProduzida" /></td>
+        <td><input [(ngModel)]="item.gravacaoInicio" /></td>
+        <td><input [(ngModel)]="item.gravacaoFinal" /></td>
+        <td><input [(ngModel)]="item.falhasSpark" /></td>
+        <td><input [(ngModel)]="item.confereEquip" /></td>
+        <td><input [(ngModel)]="item.turno" /></td>
+        <td><input [(ngModel)]="item.operador" /></td>
+        <td><input [(ngModel)]="item.data" type="date" /></td>
+        <td><input [(ngModel)]="item.laudo" /></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="footer-info">
+    <p><strong>* Gravação Metro a Metro:</strong> Deve conter 1 metro entre uma gravação e outra; Aplicado para cabos acima de 3 mm².</p>
+    <p><strong>** Visual:</strong> A - Aprovado | R - Reprovado</p>
+    <p><strong>*** Check List:</strong> Conferir equipamentos de medição e teste: paquímetro, micrômetro, Spark Test, Conjunto Metrador.</p>
+  </div>
+</div>

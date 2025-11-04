@@ -15,6 +15,9 @@ import { ActivatedRoute, Router } from '@angular/router'; // Adicionado Activate
 })
 // Implementa OnInit e OnDestroy para controle do ciclo de vida
 export class ProcessMonitoringFormComponent implements OnInit, OnDestroy {
+uploadImage($event: Event,arg1: string) {
+throw new Error('Method not implemented.');
+}
 
   // --- Propriedades Existentes ---
   formConfig: any = { // Mantido como estava
