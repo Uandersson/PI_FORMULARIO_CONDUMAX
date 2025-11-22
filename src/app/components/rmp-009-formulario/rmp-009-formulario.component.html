@@ -1,73 +1,157 @@
-<div class="page-container">
-  <h2>REGISTRO DE MONITORAMENTO DO PROCESSO - MEDIÇÃO / EMBALAGEM - COMERCIAL</h2>
-
-  <div class="header-info">
-    <div><strong>RMP-009</strong></div>
-    <div>Revisão: 001 | Data: 01/04/2020</div>
-    <div>Plano de Controle Nº: 009</div>
+<div class="page-container" *ngIf="pages.length > 0">
+  <div class="header">
+    <div class="logo">Condumax</div>
+    <div class="title-block">
+      <h1>REGISTRO DE MONITORAMENTO DO PROCESSO - MEDIÇÃO / EMBALAGEM - COMERCIAL</h1>
+    </div>
+    <div class="info-block">
+      <table>
+        <tr>
+          <td>RMP-009</td>
+          <td>Revisão: 001</td>
+          <td>Data: 01/04/2020</td>
+        </tr>
+        <tr>
+          <td colspan="3">Plano de Controle: Nº 009</td>
+        </tr>
+      </table>
+    </div>
   </div>
 
-  <table class="process-table">
+  <!-- Tabela de Parâmetros de Controle -->
+  <table class="control-table">
     <thead>
+      <!-- Linha 1 do Cabeçalho -->
       <tr>
-        <th rowspan="2">ITEM</th>
-        <th rowspan="2">Código do Produto</th>
-        <th rowspan="2">Lote</th>
+        <th rowspan="3">ITEM</th>
+        <th rowspan="3">Código do Produto</th>
+        <th rowspan="3">Lote</th>
+        <th colspan="13">PARÂMETROS DE CONTROLE</th>
+        <th rowspan="3">N° de Falhas Spark Test</th>
+        <th rowspan="3">Turno</th>
+        <th rowspan="3">Registro do Operador</th>
+        <th rowspan="3">Data</th>
+        <th rowspan="3">Laudo A/R</th>
+      </tr>
+      <!-- Linha 2 do Cabeçalho -->
+      <tr>
         <th rowspan="2">Aterramento da Bobina</th>
         <th rowspan="2">Realização conforme Plano de Controle</th>
         <th colspan="2">Diâmetro Externo do Cabo (mm)</th>
-        <th colspan="2">Alongamento do Fio Hidramax Fio Lide (%)</th>
-        <th colspan="2">Oxidação do Cobre</th>
-        <th rowspan="2">Quantidade Produzida (m)</th>
+        <th colspan="2">Alongamento do Fio Hiderax e Fio Lde (%)</th>
+        <th colspan="2">Conferir Metro a Metro (OK ou NÃO)</th>
+        <th colspan="2">Oxidação do Cobre TPF-106 Aprovado/Reprovado</th>
+        <th rowspan="2">Quantidade Produzida</th>
         <th colspan="2">Gravação - Acabamento</th>
-        <th rowspan="2">Nº de Falhas Spark Test</th>
-        <th rowspan="2">Confere equipamentos de medição e teste?</th>
-        <th rowspan="2">Turno</th>
-        <th rowspan="2">Registro do Operador</th>
-        <th rowspan="2">Data</th>
-        <th rowspan="2">Laudo A/R</th>
+        <th rowspan="2">Conferir equipamentos de medição e teste? (OK ou S/OK)</th>
       </tr>
+      <!-- Linha 3 do Cabeçalho -->
       <tr>
         <th>Menor</th>
         <th>Maior</th>
         <th>Início</th>
         <th>Final</th>
-        <th>TP-106</th>
-        <th>Aprovado/Reprovado</th>
+        <th>Início</th>
+        <th>Final</th>
+        <th>Início</th>
+        <th>Final</th>
         <th>Início</th>
         <th>Final</th>
       </tr>
     </thead>
-
     <tbody>
-      <tr *ngFor="let item of items; let i = index">
-        <td>{{ i + 1 }}</td>
-        <td><input [(ngModel)]="item.codigo" /></td>
-        <td><input [(ngModel)]="item.lote" /></td>
-        <td><input [(ngModel)]="item.aterramento" /></td>
-        <td><input [(ngModel)]="item.planoControle" /></td>
-        <td><input [(ngModel)]="item.diametroMenor" /></td>
-        <td><input [(ngModel)]="item.diametroMaior" /></td>
-        <td><input [(ngModel)]="item.alongamentoInicio" /></td>
-        <td><input [(ngModel)]="item.alongamentoFinal" /></td>
-        <td><input [(ngModel)]="item.oxidacaoInicio" /></td>
-        <td><input [(ngModel)]="item.oxidacaoFinal" /></td>
-        <td><input [(ngModel)]="item.qtdProduzida" /></td>
-        <td><input [(ngModel)]="item.gravacaoInicio" /></td>
-        <td><input [(ngModel)]="item.gravacaoFinal" /></td>
-        <td><input [(ngModel)]="item.falhasSpark" /></td>
-        <td><input [(ngModel)]="item.confereEquip" /></td>
-        <td><input [(ngModel)]="item.turno" /></td>
-        <td><input [(ngModel)]="item.operador" /></td>
-        <td><input [(ngModel)]="item.data" type="date" /></td>
-        <td><input [(ngModel)]="item.laudo" /></td>
+      <!-- Loop pelas 20 linhas da folha atual -->
+      <tr *ngFor="let row of pages[currentPageIndex].items; let i = index">
+        <td class="cell-item">{{ row.item }}</td>
+        <td class="cell-codigo"><input type="text" [(ngModel)]="row.codigo_produto" [disabled]="isReadOnly"></td>
+        <td class="cell-lote"><input type="text" [(ngModel)]="row.lote" [disabled]="isReadOnly"></td>
+        
+        <!-- Parâmetros de Controle -->
+        <td class="cell-options">
+          <select [(ngModel)]="row.aterramento_bobina" [disabled]="isReadOnly">
+            <option value="sim">Sim</option>
+            <option value="nao">Não</option>
+          </select>
+        </td>
+        <td class="cell-input"><input type="text" [(ngModel)]="row.realizacao_plano_controle" [disabled]="isReadOnly"></td>
+        <td class="cell-input"><input type="text" [(ngModel)]="row.diametro_menor" [disabled]="isReadOnly"></td>
+        <td class="cell-input"><input type="text" [(ngModel)]="row.diametro_maior" [disabled]="isReadOnly"></td>
+        <td class="cell-input"><input type="text" [(ngModel)]="row.alongamento_inicio" [disabled]="isReadOnly"></td>
+        <td class="cell-input"><input type="text" [(ngModel)]="row.alongamento_final" [disabled]="isReadOnly"></td>
+        <td class="cell-check"><input type="checkbox" [(ngModel)]="row.metro_inicio" [disabled]="isReadOnly"></td>
+        <td class="cell-check"><input type="checkbox" [(ngModel)]="row.metro_final" [disabled]="isReadOnly"></td>
+        <td class="cell-check"><input type="checkbox" [(ngModel)]="row.oxidacao_inicio" [disabled]="isReadOnly"></td>
+        <td class="cell-check"><input type="checkbox" [(ngModel)]="row.oxidacao_final" [disabled]="isReadOnly"></td>
+        <td class="cell-input"><input type="text" [(ngModel)]="row.quantidade_produzida" [disabled]="isReadOnly"></td>
+        <td class="cell-input"><input type="text" [(ngModel)]="row.gravacao_inicio" [disabled]="isReadOnly"></td>
+        <td class="cell-input"><input type="text" [(ngModel)]="row.gravacao_final" [disabled]="isReadOnly"></td>
+        <td class="cell-options">
+           <select [(ngModel)]="row.conferir_equipamentos" [disabled]="isReadOnly">
+            <option value="OK">OK</option>
+            <option value="S/OK">S/OK</option>
+          </select>
+        </td>
+        
+        <!-- Colunas Finais -->
+        <td class="cell-input"><input type="text" [(ngModel)]="row.n_falhas_spark" [disabled]="isReadOnly"></td>
+        <td class="cell-input"><input type="text" [(ngModel)]="row.turno" [disabled]="isReadOnly"></td>
+        <td class="cell-input"><input type="text" [(ngModel)]="row.registro_operador" [disabled]="isReadOnly"></td>
+        <td class="cell-input"><input type="text" [(ngModel)]="row.data" [disabled]="isReadOnly" placeholder="dd/mm/aaaa"></td>
+        <td class="cell-check"><input type="checkbox" [(ngModel)]="row.laudo_ar" [disabled]="isReadOnly"></td>
       </tr>
     </tbody>
   </table>
 
-  <div class="footer-info">
-    <p><strong>* Gravação Metro a Metro:</strong> Deve conter 1 metro entre uma gravação e outra; Aplicado para cabos acima de 3 mm².</p>
-    <p><strong>** Visual:</strong> A - Aprovado | R - Reprovado</p>
-    <p><strong>*** Check List:</strong> Conferir equipamentos de medição e teste: paquímetro, micrômetro, Spark Test, Conjunto Metrador.</p>
+  <!-- Rodapé do Formulário -->
+  <table class="footer-table">
+    <tr>
+      <td class="footer-block">
+        <strong>*Gravação Metro a Metro</strong><br>
+        Deve conter 1 metro entre uma gravação e outra;<br>
+        Aplicado para cabos acima de 8 mm².
+      </td>
+      <td class="footer-block">
+        <strong>** VISUAL **</strong><br>
+        A - Aprovado<br>
+        R - Reprovado
+      </td>
+      <td class="footer-block">
+        <strong>- Gravação:</strong><br>
+        Legível, não pode ser apagada e conforme<br>
+        Ordem de Produção
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3" class="footer-checklist">
+        <strong>***Check List =</strong> Conferir equipamentos de medição e teste: paquímetro, micrometro, Spark Test, Conjunto Metrador, detector de rugosidade conforme documento ME-011
+      </td>
+    </tr>
+  </table>
+
+  <!-- Controles de Paginação e Ações -->
+  <div class="pagination-controls">
+    <button (click)="previousPage()" [disabled]="currentPageIndex === 0">Anterior</button>
+    <div class="page-indicators">
+      <span *ngFor="let page of pages; let i = index" (click)="goToPage(i)" [class.active]="i === currentPageIndex">{{ i + 1 }}</span>
+    </div>
+    <button (click)="nextPage()" [disabled]="currentPageIndex === pages.length - 1">Próxima</button>
   </div>
+
+  <div class="form-actions">
+    <div class="left-actions">
+        <button type="button" class="remove-button"
+                *ngIf="!isReadOnly && pages.length > 1"
+                (click)="removePage()">
+            Remover Folha {{ currentPageIndex + 1 }}
+        </button>
+    </div>
+    <div class="right-actions">
+        <button type="button" (click)="addPage()" *ngIf="!isReadOnly" title="Adiciona uma nova folha em branco ao final">
+            + Adicionar Nova Folha
+        </button>
+        <button type="button" (click)="goBack()">Voltar</button>
+        <button type="button" *ngIf="!isReadOnly" (click)="submitAndClear()">Salvar e Finalizar</button>
+    </div>
+  </div>
+
 </div>
