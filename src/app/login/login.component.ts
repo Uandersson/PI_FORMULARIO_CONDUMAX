@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
-  standalone: true,
-  imports: [FormsModule],
   templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css'],
+  standalone: false // <--- MUITO IMPORTANTE: Tem que ser false
 })
 export class LoginComponent {
 
@@ -19,10 +18,10 @@ export class LoginComponent {
   fazerLogin() {
     this.auth.login(this.email, this.senha)
       .then(() => {
-        this.router.navigate(['/home']); // redireciona
+        this.router.navigate(['/home']);
       })
-      .catch(err => {
-        alert("Erro no login: " + err.message);
+      .catch((err: any) => {
+        alert("Erro no login: " + (err.message || "Erro desconhecido"));
       });
   }
 }

@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
+  standalone: false  // <--- MUITO IMPORTANTE: Tem que ser false
 })
-export class AppComponent {}
+export class AppComponent {
+  title = 'PI_FORMULARIO_CONDUMAX';
+}
