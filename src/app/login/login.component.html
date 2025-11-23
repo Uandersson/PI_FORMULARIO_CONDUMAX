@@ -1,44 +1,11 @@
-<div class="page">
-  <div class="panel">
-    <!-- ESQUERDA -->
-    <div class="left">
-      <img
-        class="logo"
-        src="/assets/imagens/LOGO-CONDUMAX-espanhol-branca-inicio.png"
-        alt="Condumax"
-      />
+<div>
+  <h2>Login</h2>
 
-      <h1>Entrar</h1>
+  <input type="email" [(ngModel)]="email" placeholder="Email">
+  <br>
 
-      <form class="form" (ngSubmit)="submit()" [formGroup]="form">
-        <label>Usuário</label>
-        <input type="text" formControlName="user" placeholder="Digite seu usuário" />
-        <small *ngIf="form.controls.user.touched && form.controls.user.invalid">
-          Informe o usuário.
-        </small>
-        
-        <label>Senha</label>
-        <input type="password" formControlName="senha" placeholder="Digite sua senha" />
-        <small *ngIf="form.controls.senha.touched && form.controls.senha.invalid">
-          Informe a senha.
-        </small>
+  <input type="password" [(ngModel)]="senha" placeholder="Senha">
+  <br>
 
-        <button type="submit" [disabled]="loading">
-          {{ loading ? 'Entrando...' : 'Entrar' }}
-        </button>
-
-      </form>
-
-      <p class="error" *ngIf="error">{{ error }}</p>
-    </div>
-
-    <!-- DIREITA -->
-    <div class="right">
-      <div class="overlay"></div>
-      <div class="welcome">
-        <h2>Bem-vindo(a) à Condumax!</h2>
-        <p>Conectando inovação e eficiência.</p>
-      </div>
-    </div>
-  </div>
+  <button (click)="fazerLogin()">Entrar</button>
 </div>
