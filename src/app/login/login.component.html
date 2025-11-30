@@ -1,11 +1,37 @@
-<div>
-  <h2>Login</h2>
+<div class="page">
+  <div class="panel">
+    
+    <!-- ESQUERDA -->
+    <div class="left">
+      <img
+        class="logo"
+        src="/assets/imagens/LOGO-CONDUMAX-espanhol-branca-inicio.png"
+        alt="Condumax"
+      />
 
-  <input type="email" [(ngModel)]="email" placeholder="Email">
-  <br>
+      <h2>Login</h2>
+      <h1>Entrar</h1>
 
-  <input type="password" [(ngModel)]="senha" placeholder="Senha">
-  <br>
+      <!-- 🔥 ESTA É A PARTE DO LOGIN QUE VOCÊ QUER MANTER -->
+      <input placeholder="Email" #email>
+      <br>
+      <input type="password" placeholder="Senha" #senha>
+      <br>
 
-  <button (click)="fazerLogin()">Entrar</button>
+      <button (click)="login(email.value, senha.value)">Entrar</button>
+
+      <p>{{ message }}</p>
+
+    </div>
+
+    <!-- DIREITA -->
+    <div class="right">
+      <div class="overlay"></div>
+      <div class="welcome">
+        <h2>Bem-vindo(a) à Condumax!</h2>
+        <p>Conectando inovação e eficiência.</p>
+      </div>
+    </div>
+
+  </div>
 </div>

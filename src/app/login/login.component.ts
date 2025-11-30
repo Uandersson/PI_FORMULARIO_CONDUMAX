@@ -1,27 +1,27 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { Auth, signInWithEmailAndPassword } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
-  standalone: false // <--- MUITO IMPORTANTE: Tem que ser false
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
 
-  email: string = '';
-  senha: string = '';
+  message: string = '';
 
-  constructor(private auth: AuthService, private router: Router) {}
+  constructor(
+    private auth: Auth,
+    private router: Router
+  ) {}
 
-  fazerLogin() {
-    this.auth.login(this.email, this.senha)
+  login(email: string, senha: string) {
+    signInWithEmailAndPassword(this.auth, email, senha)
       .then(() => {
-        this.router.navigate(['/home']);
+        this.router.navigate(['/home']);   // ⬅ redireciona após login
       })
-      .catch((err: any) => {
-        alert("Erro no login: " + (err.message || "Erro desconhecido"));
-      });
+      .catch(err => this.message = 'Erro: ' + err.message);
   }
 }
